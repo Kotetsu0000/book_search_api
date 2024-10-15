@@ -143,7 +143,7 @@ def isbn13_to_isbn10(isbn13:str) -> str:
     return isbn10_body + str(check_digit)
 
 def only_number(number:str) -> str:
-    """文字列から数字のみを取り出す
+    """文字列からISBNで利用されている文字のみを取り出す
     
     Args:
         number (str): 数字を含む文字列
@@ -151,7 +151,12 @@ def only_number(number:str) -> str:
     Returns:
         str: 数字のみを取り出した文字列
     """
-    return ''.join(filter(str.isdecimal, number))
+    if number[-1] == "X":
+        number = number[:-1]
+        last = "X"
+    else:
+        last = ""
+    return ''.join(filter(str.isdecimal, number)) + last
 
 def calc_both_isbn(isbn:str|int) -> tuple:
     """ISBN10とISBN13の両方を計算する
