@@ -29,6 +29,21 @@ class OpenLibraryAPI:
             if self.verbose:logger.error('Request failed')
             return None
         
+    def author_search(self, author_key):
+        if self.verbose:logger.info(f'Searching for books by author: {author_key}')
+        try:
+            response = requests.get(f'{self.base_url}{author_key}.json', timeout=self.timeout)
+        except requests.exceptions.Timeout:
+            if self.verbose:logger.error('Request timed out')
+            return None
+        if response.status_code == 200:
+            if self.verbose:logger.info('Request succeeded')
+            return response.json()
+        else:
+            if self.verbose:logger.error('Request failed')
+            return None
+
+        
 class GoogleBooksAPI:
     def __init__(self, timeout=1, verbose=False):
         self.base_url = 'https://www.googleapis.com/books/v1'
@@ -101,7 +116,7 @@ def isbn10_to_isbn13(isbn10:str) -> str:
     """
     isbn10 = only_number(str(isbn10))
     if len(isbn10) != 10:
-        raise ValueError("ISBN10の長さが不正です")
+        raise ValueError(f"ISBN10の長さが不正です. isnb_10={isbn10}")
     
     # "978"を先頭に追加し、チェックディジットを除いた部分を取得
     isbn13_body = "978" + isbn10[:-1]
@@ -125,7 +140,7 @@ def isbn13_to_isbn10(isbn13:str) -> str:
     """
     isbn13 = only_number(str(isbn13))
     if len(isbn13) != 13 or not isbn13.startswith("978"):
-        raise ValueError("ISBN13のフォーマットが不正です")
+        raise ValueError(f"ISBN13のフォーマットが不正です. isbn_13={isbn13}")
     
     # ISBN13の4〜12桁を使ってチェックディジットを除いた部分を取得
     isbn10_body = isbn13[3:-1]
