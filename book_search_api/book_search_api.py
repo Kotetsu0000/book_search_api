@@ -22,6 +22,12 @@ class OpenLibraryAPI:
         except requests.exceptions.Timeout:
             if self.verbose:logger.error('Request timed out')
             return None
+        except requests.exceptions.ConnectionError:
+            if self.verbose:logger.error('Connection error')
+            return None
+        except:
+            if self.verbose:logger.error('Unknown error')
+            return None
         if response.status_code == 200:
             if self.verbose:logger.info('Request succeeded')
             return response.json()
@@ -35,6 +41,12 @@ class OpenLibraryAPI:
             response = requests.get(f'{self.base_url}{author_key}.json', timeout=self.timeout)
         except requests.exceptions.Timeout:
             if self.verbose:logger.error('Request timed out')
+            return None
+        except requests.exceptions.ConnectionError:
+            if self.verbose:logger.error('Connection error')
+            return None
+        except:
+            if self.verbose:logger.error('Unknown error')
             return None
         if response.status_code == 200:
             if self.verbose:logger.info('Request succeeded')
@@ -57,6 +69,12 @@ class GoogleBooksAPI:
         except requests.exceptions.Timeout:
             if self.verbose:logger.error('Request timed out')
             return None
+        except requests.exceptions.ConnectionError:
+            if self.verbose:logger.error('Connection error')
+            return None
+        except:
+            if self.verbose:logger.error('Unknown error')
+            return None
         if response.status_code == 200:
             if self.verbose:logger.info('Request succeeded')
             return response.json()
@@ -78,6 +96,12 @@ class NDLAPI:
         except requests.exceptions.Timeout:
             if self.verbose:logger.error('Request timed out')
             return None
+        except requests.exceptions.ConnectionError:
+            if self.verbose:logger.error('Connection error')
+            return None
+        except:
+            if self.verbose:logger.error('Unknown error')
+            return None
         if response.status_code == 200:
             if self.verbose:logger.info('Request succeeded')
             return xmltodict.parse(response.text)
@@ -97,6 +121,12 @@ class OpenBDAPI:
             response = requests.get(f'{self.base_url}/get', params={'isbn': isbn}, timeout=self.timeout)
         except requests.exceptions.Timeout:
             if self.verbose:logger.error('Request timed out')
+            return None
+        except requests.exceptions.ConnectionError:
+            if self.verbose:logger.error('Connection error')
+            return None
+        except:
+            if self.verbose:logger.error('Unknown error')
             return None
         if response.status_code == 200:
             if self.verbose:logger.info('Request succeeded')
